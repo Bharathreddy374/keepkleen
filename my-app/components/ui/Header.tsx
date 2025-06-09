@@ -13,10 +13,12 @@ import {
 } from "./ui/dropdown-menu"
 import { Badge } from "./ui/badge"
 import { Web3Auth } from "@web3auth/modal"
+import { Web3AuthModalPack, Web3AuthConfig } from "@web3auth/modal";
+
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base"
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
-import { createUser, getUnreadnotifications, markNotificationAsRead, getUserByEmail, getUserBalance } from "@/utils/db/actions"
+import { createUser, getUnreadNotifications, markNotificationAsRead, getUserByEmail, getUserBalance } from "@/utils/db/actions"
 
 const clientId = process.env.WEB3_AUTH_CLIENT_ID;
 
@@ -37,7 +39,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth({
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET, // Changed from SAPPHIRE_MAINNET to TESTNET
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET, // Changed from SAPPHIRE_MAINNET to TESTNET
   privateKeyProvider,
 });
 
@@ -61,7 +63,7 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
   useEffect(() => {
     const init = async () => {
       try {
-        await web3auth.initModal();
+        await web3auth.init();
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {
@@ -210,7 +212,8 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
           <Link href="/" className="flex items-center">
             <Leaf className="h-6 w-6 md:h-8 md:w-8 text-green-500 mr-1 md:mr-2" />
             <div className="flex flex-col">
-              <span className="font-bold text-base md:text-lg text-gray-800">KeepKleen</span>
+              <span className="font-bold text-base md:text-lg text-gray-800">Zero2Hero</span>
+              <span className="text-[8px] md:text-[10px] text-gray-500 -mt-1">ETHOnline24</span>
             </div>
           </Link>
         </div>
@@ -271,7 +274,6 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
             <Button onClick={login} className="bg-green-600 hover:bg-green-700 text-white text-sm md:text-base">
               Login
               <LogIn className="ml-1 md:ml-2 h-4 w-4 md:h-5 md:w-5" />
-
             </Button>
           ) : (
             <DropdownMenu>
