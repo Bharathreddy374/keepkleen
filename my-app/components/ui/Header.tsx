@@ -3,25 +3,22 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation'
-import { Button } from "./ui/button"
+import { Button } from "@/components/ui/button"
 import { Menu, Coins, Leaf, Search, Bell, User, ChevronDown, LogIn, LogOut } from "lucide-react"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
-} from "./ui/dropdown-menu"
-import { Badge } from "./ui/badge"
+} from "@/components/ui/dropdown-menu"
+import { Badge } from "@/components/ui/badge"
 import { Web3Auth } from "@web3auth/modal"
-import { Web3AuthModalPack, Web3AuthConfig } from "@web3auth/modal";
-
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base"
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { createUser, getUnreadNotifications, markNotificationAsRead, getUserByEmail, getUserBalance } from "@/utils/db/actions"
 
-const clientId = process.env.WEB3_AUTH_CLIENT_ID;
-
+const clientId =process.env.WEB3_AUTH_CLIENT_ID
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0xaa36a7",
@@ -39,7 +36,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth({
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET, // Changed from SAPPHIRE_MAINNET to TESTNET
+  web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET, // Changed from SAPPHIRE_MAINNET to TESTNET
   privateKeyProvider,
 });
 
@@ -63,7 +60,7 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
   useEffect(() => {
     const init = async () => {
       try {
-        await web3auth.init();
+        await web3auth.initModal();
         setProvider(web3auth.provider);
 
         if (web3auth.connected) {
